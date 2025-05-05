@@ -1,0 +1,24 @@
+﻿<Window x:Class="MusicApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MusicApp"
+        mc:Ignorable="d"
+        Title="Music App" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TextBlock x:Name="textBlock" HorizontalAlignment="Center" Margin="0,55,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="77" Width="521" FontSize="48" Background="#FF33E48F">
+            <TextBlock.Effect>
+                <DropShadowEffect/>
+            </TextBlock.Effect><Run Language="es-co" Text=" "/><Run Text="Welcome to Music App!"/></TextBlock>
+        <Button Content="Test Conection" HorizontalAlignment="Center" VerticalAlignment="Center" Click="Button_Click" Background="#FF86F3F1" Cursor="Hand" FontSize="24" Height="63">
+            <Button.Effect>
+                <DropShadowEffect/>
+            </Button.Effect>
+        </Button>
+
+    </Grid>
+</Window>
