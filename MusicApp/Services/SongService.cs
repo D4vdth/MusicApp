@@ -1,17 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MusicApp.Database.Tables;
+﻿using MusicApp.Database.Tables;
+using MusicApp.Models;
 
 namespace MusicApp.Services
 {
     internal class SongService
     {
         public SongDb db;
-        public SongService() { 
+        public SongService()
+        {
             this.db = new SongDb();
+        }
+
+        public List<Song> getAll()
+        {
+            return this.db.GetAll();
         }
     }
 }

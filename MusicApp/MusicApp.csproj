@@ -9,7 +9,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Views\Assets\Music\CuantoVale-LuisAlfonso\cuanto-vale.jpeg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MySql.Data" Version="9.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\NewFolder\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Views\Assets\Music\CuantoVale-LuisAlfonso\cuanto-vale.jpeg" />
   </ItemGroup>
 
 </Project>

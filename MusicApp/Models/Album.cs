@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+using System.ComponentModel.DataAnnotations;
 namespace MusicApp.Models
 {
     internal class Album
     {
-        public int Id { get; set; }
-
-        public int cantSongs;
-        public DateTime dateRelease;
-        public string artist;
+        public string Id { get; set; }
+        public string Title { get; set; }
+        public string ArtistId { get; set; } 
+        public Artist Artist { get; set; }
+        public DateTime ReleaseDate { get; set; }
+        public List<Song> Songs { get; set; } = new List<Song>();
 
     }
 }
