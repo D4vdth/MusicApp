@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,12 +9,9 @@ namespace MusicApp.Models
 {
     internal class Playlist
     {
-        public int Id { get; set; }
-
-        public int cantSong;
-        public string username;
-        public DateTime createdAt;
-        public DateTime updatedAt;
+        public Guid Id { get; set; }
+        public string Name { get; set; } 
+        public ObservableCollection<Song> Songs { get; set; }
 
     }
 }

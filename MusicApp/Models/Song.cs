@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,13 +9,17 @@ namespace MusicApp.Models
 {
     internal class Song
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
+        public string Title { get; set; }
+        public string ArtistId { get; set; }
+        public string AlbumId { get; set; }
+        public TimeSpan Duration { get; set; }
+        public string FilePath { get; set; }
+        public string AlbumCoverPath { get; set; }
 
-        public string title;
-        public string artist;
-        public string letter;
-        public string about;
-        public DateTime releaseDate;
+        public Artist Artist { get; set; }
+        public Album Album { get; set; }
+
 
     }
 }

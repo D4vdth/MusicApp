@@ -1,24 +1,71 @@
-﻿<Window x:Class="MusicApp.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MusicApp"
-        mc:Ignorable="d"
-        Title="Music App" Height="450" Width="800">
-    <Grid>
+        xmlns:av="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="av" x:Class="MusicApp.MainWindow"
+        Title="Music Player" Height="450" Width="800">
+    <Grid Margin="10">
+        <!-- Columnas: Lista de pistas | Área de reproducción -->
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
-        <TextBlock x:Name="textBlock" HorizontalAlignment="Center" Margin="0,55,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="77" Width="521" FontSize="48" Background="#FF33E48F">
-            <TextBlock.Effect>
-                <DropShadowEffect/>
-            </TextBlock.Effect><Run Language="es-co" Text=" "/><Run Text="Welcome to Music App!"/></TextBlock>
-        <Button Content="Test Conection" HorizontalAlignment="Center" VerticalAlignment="Center" Click="Button_Click" Background="#FF86F3F1" Cursor="Hand" FontSize="24" Height="63">
-            <Button.Effect>
-                <DropShadowEffect/>
-            </Button.Effect>
-        </Button>
 
+        <!-- Lista de canciones -->
+        <ListBox x:Name="TracksListBox"
+             Grid.Column="0"
+             DisplayMemberPath="Title"
+             SelectedIndex="0"
+             Margin="0,0,10,0"
+             ItemsSource="{Binding Songs}"
+             SelectedItem="{Binding SelectedSong}"/>
+
+        <!--<Button Content="Load Songs" Click="LoadDemoSongs" Margin="111,355,121,21"/>-->
+
+        <!-- Panel de reproducción -->
+        <StackPanel Grid.Column="1">
+            <!-- Elemento de medios invisible para audio -->
+            <MediaElement x:Name="MediaPlayer"
+                    LoadedBehavior="Manual"
+                    UnloadedBehavior="Stop"/>
+
+            <!-- Carátula del álbum -->
+            <Image x:Name="AlbumCover"
+             Height="200"
+             Stretch="Uniform"
+             Margin="0,0,0,10"
+             Source="{Binding AlbumCoverPath}"/>
+
+            <!-- Controles de reproducción -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10">
+                <Button Content="⏮" Width="50" Click="PrevButton_Click"/>
+                <Button Content="▶️" Width="50" Click="PlayButton_Click" Margin="5,0"/>
+                <Button Content="⏸️" Width="50" Click="PauseButton_Click" Margin="5,0"/>
+                <Button Content="⏹️" Width="50" Click="StopButton_Click" Margin="5,0"/>
+                <Button Content="⏭" Width="50" Click="NextButton_Click" Margin="5,0"/>
+            </StackPanel>
+
+            <!-- Slider de progreso -->
+            <Slider x:Name="PositionSlider"
+              Minimum="0"
+              Maximum="100"
+              ValueChanged="PositionSlider_ValueChanged"/>
+
+            <!-- Barra de progreso visual -->
+            <ProgressBar x:Name="ProgressBar"
+                   Minimum="0"
+                   Maximum="100"
+                   Height="10"
+                   Margin="0,5,0,10"/>
+
+            <!-- Control de volumen -->
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock Text="Vol:" VerticalAlignment="Center"/>
+                <Slider x:Name="VolumeSlider"
+                Minimum="0" Maximum="1"
+                Value="0.5"
+                Width="150"
+                ValueChanged="VolumeSlider_ValueChanged"/>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Window>
