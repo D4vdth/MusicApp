@@ -15,9 +15,38 @@
              Grid.Column="0"
              DisplayMemberPath="Title"
              SelectedIndex="0"
-             Margin="0,0,10,0"
-             ItemsSource="{Binding Songs}"
-             SelectedItem="{Binding SelectedSong}"/>
+             Margin="0,10,10,207"
+             SelectedItem="{Binding SelectedSong}">
+        </ListBox>
+        <ListView ItemsSource="{Binding Songs}" 
+                  Height="200" 
+                  Margin="0,214,10,0" 
+                  SelectionChanged="ChangeSong" 
+                  SelectedItem="{Binding SelectedSong, Mode=TwoWay}"
+                  HorizontalContentAlignment="Stretch">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Border Margin="2" Padding="8" CornerRadius="10" Background="#FFF1F1F1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- <Image Source="/Assets/music-note.png" Width="24" Height="24" Margin="5" /> -->
+
+                            <StackPanel Grid.Column="1" Margin="10,0">
+                                <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="10"/>
+                                <TextBlock Text="{Binding Duration}" FontSize="12" Foreground="Gray"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+
 
         <!--<Button Content="Load Songs" Click="LoadDemoSongs" Margin="111,355,121,21"/>-->
 

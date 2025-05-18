@@ -2,6 +2,7 @@
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Windows;
 
 namespace MusicApp.Database.Tables
 {
@@ -59,6 +60,36 @@ namespace MusicApp.Database.Tables
                 }
             }
             return songs;
+        }
+
+        public void add(Song song) 
+        {
+            string query = @"
+                INSERT INTO Song (Title, ArtistId, AlbumId, Duration, FilePath)
+                VALUES (@Title, @ArtistId, @AlbumId, @Duration, @FilePath)";
+            using (var connection = new MySqlConnection(DbConfig.ConnectionString))
+            {
+                connection.Open();
+                using (var command = new MySqlCommand(query, connection))
+                {
+                    try
+                    {
+                        command.Parameters.AddWithValue("@Title", song.Title);
+                        command.Parameters.AddWithValue("@ArtistId", 1);
+                        command.Parameters.AddWithValue("@AlbumId", 1);
+                        command.Parameters.AddWithValue("@Duration", song.Duration);
+                        command.Parameters.AddWithValue("@FilePath", song.FilePath);
+                        command.ExecuteNonQuery();
+
+                        Console.WriteLine("Cancion: " + song.Title + " guardada con exito");
+                    }
+                    catch (MySqlException e)
+                    {
+                        Console.WriteLine("Error: " + e.Message);
+                    }
+                }
+            }
+
         }
     }
 }

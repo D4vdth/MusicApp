@@ -11,6 +11,11 @@ namespace MusicApp.Controllers
             this.songService = new SongService();
         }
 
+        public void addSong(TagLib.File file)
+        {
+            this.songService.addSong(file);
+        }
+
         public List<Song> getAll()
         {
             return this.songService.getAll();

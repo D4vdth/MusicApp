@@ -14,10 +14,5 @@ namespace MusicApp.Controllers
         public AlbumController() {
             this.albumService = new AlbumService();
         }
-
-        public List<Album> getAll()
-        {
-            return this.albumService.getAll();
-        }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 namespace MusicApp.Models
 {
-    internal class Album
+    public class Album
     {
         public string Id { get; set; }
         public string Title { get; set; }

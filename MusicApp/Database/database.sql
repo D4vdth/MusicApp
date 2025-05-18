@@ -39,7 +39,7 @@ INSERT INTO Album (Name, ArtistId, ReleaseDate) VALUES ('Use Your Illusion I', (
 INSERT INTO Album (Name, ArtistId, ReleaseDate) VALUES ('MANIFESTTING 20-05', (SELECT Id FROM Artist WHERE Name = 'Feid'), '2024-01-01');
 
 INSERT INTO Song (Title, ArtistId, Duration, AlbumId, FilePath, AlbumCoverPath)
-VALUES ('Cuánto Vale', (SELECT Id FROM Artist WHERE Name = 'Luis Alfonso'), '00:03:37', (SELECT Id FROM Album WHERE Name = 'La Terraza'), '/views/Assets/Music/CuantoVale-LuisAlfonso/cuanto-vale.mp3', '/MusicApp;/views/Assets/Music/CuantoVale-LuisAlfonso/cuanto-vale.jpeg'); 
+VALUES ('Cuï¿½nto Vale', (SELECT Id FROM Artist WHERE Name = 'Luis Alfonso'), '00:03:37', (SELECT Id FROM Album WHERE Name = 'La Terraza'), '/views/Assets/Music/CuantoVale-LuisAlfonso/cuanto-vale.mp3', '/MusicApp;/views/Assets/Music/CuantoVale-LuisAlfonso/cuanto-vale.jpeg'); 
 INSERT INTO Song (Title, ArtistId, Duration, AlbumId, FilePath, AlbumCoverPath)
 VALUES ('Grupo Frontera x Ke Personajes - OJITOS ROJOS', (SELECT Id FROM Artist WHERE Name = 'Grupo Frontera'), '00:03:52', (SELECT Id FROM Album WHERE Name = 'El Comienzo'), '/ruta/ojitos_rojos.mp3', '/ruta/el_comienzo.jpg'); 
 INSERT INTO Song (Title, ArtistId, Duration, AlbumId, FilePath, AlbumCoverPath)
