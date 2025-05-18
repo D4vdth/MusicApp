@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: MusicApp
+      MYSQL_ROOT_PASSWORD: secret123
+    volumes:
+      - ./database.sql:/docker-entrypoint-initdb.d/database.sql
+      - databaseMusicApp:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+volumes:
+  databaseMusicApp:
