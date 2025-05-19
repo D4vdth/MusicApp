@@ -20,5 +20,10 @@ namespace MusicApp.Controllers
         {
             return this.songService.getAll();
         }
+
+        public List<Song> Search(string query)
+        {
+            return this.songService.Search(query);
+        }
     }
 }
