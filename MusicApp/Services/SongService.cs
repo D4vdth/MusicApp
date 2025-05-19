@@ -29,10 +29,5 @@ namespace MusicApp.Services
         {
             return this.db.GetAll();
         }
-
-        public List<Song> Search(string query)
-        {
-            return getAll().Where(song => song.Title.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
-        }
     }
 }

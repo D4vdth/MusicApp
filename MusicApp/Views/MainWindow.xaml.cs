@@ -19,32 +19,16 @@ namespace MusicApp
         private SongController songController;
 
         public Song SelectedSong { get; set; }
-
-        private DispatcherTimer timer;
-        private bool isDragging = false;
-        private bool isSliderBeingDragged = false;
         public MainWindow()
         {
             
             InitializeComponent();
             LoadDemoSongs();
 
-            PositionSlider.PreviewMouseDown += (s, e) => isSliderBeingDragged = true;
-            PositionSlider.PreviewMouseUp += (s, e) =>
-            {
-                isSliderBeingDragged = false;
-                // Adelanta o retrocede el audio al soltar el mouse
-                MediaPlayer.Position = TimeSpan.FromSeconds(PositionSlider.Value);
-            };
-
             this.songController = new SongController();
 
             Songs = new ObservableCollection<Song>(songController.getAll());
             this.DataContext = this;
-
-            timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(1);
-            timer.Tick += Timer_Tick;
         }
 
         private void Open(object sender, RoutedEventArgs e)
@@ -69,11 +53,6 @@ namespace MusicApp
                 TagLib.File file = TagLib.File.Create(originalPath);
 
                 this.songController.addSong(file);
-                Songs.Clear();
-                foreach (var song in songController.getAll())
-                {
-                    Songs.Add(song);
-                }
 
                 string fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"media/audio/{fileName}");
                 MediaPlayer.Source = new Uri(fullPath, UriKind.Absolute);
@@ -131,30 +110,12 @@ namespace MusicApp
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            if (!isDragging && MediaPlayer.NaturalDuration.HasTimeSpan)
-            {
-                PositionSlider.Value = MediaPlayer.Position.TotalSeconds;
-            }
+           
         }
 
         private void PositionSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            // Solo cambiar posición si el usuario NO está arrastrando
-            if (!isSliderBeingDragged)
-            {
-                MediaPlayer.Position = TimeSpan.FromSeconds(PositionSlider.Value);
-            }
-        }
-
-        private void PositionSlider_DragStarted(object sender, DragStartedEventArgs e)
-        {
-            isDragging = true;
-        }
-
-        private void PositionSlider_DragCompleted(object sender, DragCompletedEventArgs e)
-        {
-            isDragging = false;
-            MediaPlayer.Position = TimeSpan.FromSeconds(PositionSlider.Value);
+            
         }
 
         private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -184,42 +145,7 @@ namespace MusicApp
             MediaPlayer.Source = new Uri(fullPath, UriKind.Absolute);
             MediaPlayer.Volume = VolumeSlider.Value;
             MediaPlayer.IsMuted = false;
-
-            MediaPlayer.MediaOpened += (s, e) =>
-            {
-                // ayuda a establecer el rango máximo del slider según la duración de la cancion
-                PositionSlider.Maximum = MediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
-                // ajusta para pequeños y grandes movimientos del slider
-                PositionSlider.SmallChange = 1; // paso pequeño: 1 segundo
-                // actualiza la posición del slider con un temporizador
-                timer.Start();
-            };
-
             MediaPlayer.Play();
-        }
-
-        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            string query = SearchBox.Text.Trim();
-
-            if (string.IsNullOrWhiteSpace(query))
-            {
-                // Mostrar todas las canciones
-                Songs.Clear();
-                foreach (var song in songController.getAll())
-                {
-                    Songs.Add(song);
-                }
-            }
-            else
-            {
-                var filteredSongs = songController.Search(query);
-                Songs.Clear();
-                foreach (var song in filteredSongs)
-                {
-                    Songs.Add(song);
-                }
-            }
         }
 
     }
