@@ -27,6 +27,7 @@ namespace MusicApp
         private bool isShuffleEnabled = false;
         private bool isRepeatEnabled = false;
         private Random random = new Random();
+        private Song currentSong;
 
         public MainWindow()
         {
