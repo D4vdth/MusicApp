@@ -243,18 +243,18 @@
                 <StackPanel>
                     <ListBox x:Name="CommentList" Height="100" />
                     <TextBox x:Name="NewCommentBox"
-                 Height="30"
-                 Margin="0,5,0,0"
-                 FontSize="12"
-                 Padding="4"
-                 Text="Escribe un comentario..."
-                 Foreground="Gray"
-                 GotFocus="NewCommentBox_GotFocus"
-                 LostFocus="NewCommentBox_LostFocus"/>
+                         Height="30"
+                         Margin="0,5,0,0"
+                         FontSize="12"
+                         Padding="4"
+                         Text="Escribe un comentario..."
+                         Foreground="Gray"
+                         GotFocus="NewCommentBox_GotFocus"
+                         LostFocus="NewCommentBox_LostFocus"/>
                     <Button Content="Agregar comentario"
-                Click="AddComment_Click"
-                HorizontalAlignment="Right"
-                Margin="0,5,0,0"/>
+                        Click="AddComment_Click"
+                        HorizontalAlignment="Right"
+                        Margin="0,5,0,0"/>
                 </StackPanel>
             </GroupBox>
         </StackPanel>

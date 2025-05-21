@@ -1,40 +1,39 @@
 CREATE TABLE Artist (
-    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Id INT AUTO_INCREMENT PRIMARY KEY,
     Name VARCHAR(200) NOT NULL
-)
+);
 
 CREATE TABLE Album (
-    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Id INT AUTO_INCREMENT PRIMARY KEY,
     Name VARCHAR(200) NOT NULL,
     ArtistId INT NOT NULL,
     ReleaseDate DATE,
     FOREIGN KEY (ArtistId) REFERENCES Artist(Id)
         ON DELETE CASCADE
-)
+);
 
 CREATE TABLE Song (
-    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Id INT AUTO_INCREMENT PRIMARY KEY,
     Title VARCHAR(200) NOT NULL,
     ArtistId INT NOT NULL,
     Duration TIME NOT NULL,
     FilePath VARCHAR(500),
     AlbumCoverPath VARCHAR(500),
     AlbumId INT NOT NULL,
-    FOREIGN KEY (AlbumId) REFERENCES Album(Id)
+   FOREIGN KEY (AlbumId) REFERENCES Album(Id)
         ON DELETE CASCADE,
-    FOREIGN KEY (ArtistId) REFERENCES Artist(Id)
-        ON DELETE CASCADE
-)
-
-CREATE TABLE Comments (
-    id INT IDENTITY (1,1) PRIMARY KEY,
-    username VARCHAR(50),
-    comment VARCHAR(500),
-    commentDate DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (songId) REFERENCES Song(Id)
+   FOREIGN KEY (ArtistId) REFERENCES Artist(Id)
         ON DELETE CASCADE
 );
-   
+
+CREATE TABLE Comments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    songId INT NOT NULL,
+    username VARCHAR(50),
+    comment TEXT,
+    commentDate DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
 INSERT INTO Artist (Name) VALUES ('Luis Alfonso');
 INSERT INTO Artist (Name) VALUES ('Grupo Frontera');
 INSERT INTO Artist (Name) VALUES ('Elvis Crespo');

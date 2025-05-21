@@ -44,7 +44,7 @@ namespace MusicApp.Database.Tables
 
                         var song = new Song
                         {
-                            Id = reader.GetInt32("Id").ToString(),
+                            Id = reader.GetInt32("Id"),
                             Title = reader.GetString("Title"),
                             ArtistId = reader.GetInt32("ArtistId").ToString(),
                             AlbumId = reader.GetInt32("AlbumId").ToString(),

@@ -197,7 +197,7 @@ namespace MusicApp
             MediaPlayer.MediaOpened += (s, e) =>
             {
                 // ayuda a establecer el rango máximo del slider según la duración de la cancion
-                PositionSlider.Maximum = MediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
+                //PositionSlider.Maximum = MediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
                 // ajusta para pequeños y grandes movimientos del slider
                 PositionSlider.SmallChange = 1; // paso pequeño: 1 segundo
                 // actualiza la posición del slider con un temporizador
@@ -205,6 +205,7 @@ namespace MusicApp
             };
 
             MediaPlayer.Play();
+            LoadComments(selectedSong.Id);
         }
 
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -268,12 +269,11 @@ namespace MusicApp
         {
             var comments = commentsController.GetComments(songId);
 
-            // Esto es el control visual ListBox definido en XAML
-            CommentList.Items.Clear(); // ✅ correcto
+            CommentList.Items.Clear();
 
             foreach (var c in comments)
             {
-                CommentList.Items.Add($"{c.username}: {c.comment} ({c.Timestamp:t})");
+                CommentList.Items.Add($"{c.username}: {c.comment} ({c.timestamp:t})");
             }
         }
 
@@ -282,18 +282,9 @@ namespace MusicApp
             if (SelectedSong != null && !string.IsNullOrWhiteSpace(NewCommentBox.Text)
                 && NewCommentBox.Text != "Escribe un comentario...")
             {
-                int songId;
-                if (int.TryParse(SelectedSong.Id, out songId))
-                {
-                    commentsController.AddComment(songId, NewCommentBox.Text.Trim());
+                    commentsController.AddComment(SelectedSong.Id, NewCommentBox.Text.Trim());
                     NewCommentBox.Clear();
-                    LoadComments(songId);
-                }
-                else
-                {
-                    MessageBox.Show("Esta canción no tiene un ID numérico válido para comentarios.");
-                }
-
+                    LoadComments(SelectedSong.Id);
             }
         }
         private void NewCommentBox_GotFocus(object sender, RoutedEventArgs e)

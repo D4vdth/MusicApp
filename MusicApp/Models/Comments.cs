@@ -8,10 +8,10 @@ namespace MusicApp.Models
 {
     public class Comments
     {
-        public int id { get; set; }
+        public int Id { get; set; }
         public int songId { get; set; }
         public string username { get; set; }
         public string comment { get; set; }
-        public DateTime Timestamp { get; set; }
+        public DateTime timestamp { get; set; }
     }
 }

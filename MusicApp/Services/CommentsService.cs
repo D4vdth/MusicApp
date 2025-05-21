@@ -14,21 +14,8 @@ namespace MusicApp.Services
     {
 
         public CommentsDb dbComments = new CommentsDb();
+        public List<Comments> GetCommentsForSong(int songId) => dbComments.GetCommentsBySongId(songId);
 
-        public List<Comments> GetCommentsForSong(int songId)
-        {
-            return dbComments.GetBySongId(songId);
-        }
-
-        public void AddComment(int songId, string text, string user = "Anónimo")
-        {
-            var comment = new Comments
-            {
-                songId = songId,
-                comment = text,
-                username = user
-            };
-            dbComments.Add(comment);
-        }
+        public void AddComment(Comments comments) => dbComments.AddComment(comments);
     }
 }
