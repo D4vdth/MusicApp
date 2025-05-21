@@ -17,7 +17,7 @@ namespace MusicApp
     {
         public ObservableCollection<Song> Songs { get; set; }
         private SongController songController;
-
+        private CommentsController commentsController = new CommentsController();
         public Song SelectedSong { get; set; }
 
         private DispatcherTimer timer;
@@ -222,5 +222,54 @@ namespace MusicApp
             }
         }
 
+        private void LoadComments(int songId)
+        {
+            var comments = commentsController.GetComments(songId);
+
+            // Esto es el control visual ListBox definido en XAML
+            CommentList.Items.Clear(); // ✅ correcto
+
+            foreach (var c in comments)
+            {
+                CommentList.Items.Add($"{c.username}: {c.comment} ({c.Timestamp:t})");
+            }
+        }
+
+
+        private void AddComment_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectedSong != null && !string.IsNullOrWhiteSpace(NewCommentBox.Text)
+                && NewCommentBox.Text != "Escribe un comentario...")
+            {
+                int songId;
+                if (int.TryParse(SelectedSong.Id, out songId))
+                {
+                    commentsController.AddComment(songId, NewCommentBox.Text.Trim());
+                    NewCommentBox.Clear();
+                    LoadComments(songId);
+                }
+                else
+                {
+                    MessageBox.Show("Esta canción no tiene un ID numérico válido para comentarios.");
+                }
+
+            }
+        }
+        private void NewCommentBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (NewCommentBox.Text == "Escribe un comentario...")
+            {
+                NewCommentBox.Text = "";
+                NewCommentBox.Foreground = Brushes.Black;
+            }
+        }
+        private void NewCommentBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(NewCommentBox.Text))
+            {
+                NewCommentBox.Text = "Escribe un comentario...";
+                NewCommentBox.Foreground = Brushes.Gray;
+            }
+        }
     }
 }

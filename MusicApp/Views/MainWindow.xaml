@@ -216,6 +216,26 @@
                 IsMoveToPointEnabled="True"
                 ValueChanged="VolumeSlider_ValueChanged"/>
             </StackPanel>
+
+            <!-- Comentarios por canción -->
+            <GroupBox Header="Comentarios" Margin="10" Height="200">
+                <StackPanel>
+                    <ListBox x:Name="CommentList" Height="100" />
+                    <TextBox x:Name="NewCommentBox"
+                 Height="30"
+                 Margin="0,5,0,0"
+                 FontSize="12"
+                 Padding="4"
+                 Text="Escribe un comentario..."
+                 Foreground="Gray"
+                 GotFocus="NewCommentBox_GotFocus"
+                 LostFocus="NewCommentBox_LostFocus"/>
+                    <Button Content="Agregar comentario"
+                Click="AddComment_Click"
+                HorizontalAlignment="Right"
+                Margin="0,5,0,0"/>
+                </StackPanel>
+            </GroupBox>
         </StackPanel>
     </Grid>
 </Window>
