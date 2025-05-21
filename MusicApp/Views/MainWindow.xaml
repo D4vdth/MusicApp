@@ -2,8 +2,29 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:av="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="av" x:Class="MusicApp.MainWindow"
-        Title="Music Player" Height="450" Width="800">
+        Title="Music Player" Height="550" Width="800">
     <Window.Resources>
+        <Style x:Key="ControlButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="45"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#007ACC"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                        CornerRadius="10"
+                        BorderThickness="0"
+                        SnapsToDevicePixels="True">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <!-- Estilo Slider con thumb -->
         <Style x:Key="CustomSliderStyle" TargetType="Slider">
             <Setter Property="Template">
@@ -145,10 +166,6 @@
             </ListView.ItemTemplate>
         </ListView>
 
-
-
-        <!--<Button Content="Load Songs" Click="LoadDemoSongs" Margin="111,355,121,21"/>-->
-
         <!-- Panel de reproducción -->
         <StackPanel Grid.Column="1">
             <!-- Elemento de medios invisible para audio -->
@@ -181,12 +198,16 @@
                         <Rectangle Width="16" Height="16" Fill="Black" RadiusX="1" RadiusY="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
                 </Button>
+                
                 <Button Width="50" Click="NextButton_Click" Margin="5,0" ToolTip="Siguiente canción" BorderThickness="0" Background="Transparent" Padding="5">
                     <Grid>
                         <Polygon Points="0,0 14,10 0,20" Fill="Black"/>
                         <Rectangle Width="4" Height="20" Fill="Black" HorizontalAlignment="Left"/>
+                        
                     </Grid>
                 </Button>
+                <Button x:Name="ShuffleButton" Content="🔀" Width="40" Height="30" Click="ShuffleButton_Click" ToolTip="Reproducción aleatoria" Margin="5,0"/>
+                <Button x:Name="RepeatButton" Content="🔁" Width="40" Height="30" Click="RepeatButton_Click" ToolTip="Repetir canción" Margin="5,0"/>
             </StackPanel>
 
             <!-- Slider de progreso -->
