@@ -10,6 +10,7 @@ using System.Windows.Controls.Primitives;
 using System.IO;
 using System.Diagnostics;
 using System.Windows.Controls;
+using Microsoft.VisualBasic;
 
 namespace MusicApp
 {
@@ -26,6 +27,28 @@ namespace MusicApp
         private bool isShuffleEnabled = false;
         private bool isRepeatEnabled = false;
         private Random random = new Random();
+
+        private readonly PlaylistController playlistController = new PlaylistController();
+        public ObservableCollection<Playlist> Playlists { get; set; } = new();
+
+        private Playlist _selectedPlaylist;
+        public Playlist SelectedPlaylist
+        {
+            get => _selectedPlaylist;
+            set
+            {
+                _selectedPlaylist = value;
+
+                if (_selectedPlaylist != null)
+                {
+                    // Llama a un método que use GetSongsByPlaylist
+                    LoadSongsFromPlaylist(_selectedPlaylist.Id.ToString());
+                }
+            }
+        }
+
+        public ObservableCollection<Song> SongsInPlaylist { get; set; } = new();
+
 
         public MainWindow()
         {
@@ -49,6 +72,9 @@ namespace MusicApp
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += Timer_Tick;
             MediaPlayer.MediaEnded += MediaPlayer_MediaEnded;
+
+            Playlists = playlistController.GetAll();
+            PlaylistListBox.ItemsSource = Playlists;
         }
 
         private void Open(object sender, RoutedEventArgs e)
@@ -264,6 +290,121 @@ namespace MusicApp
             isRepeatEnabled = !isRepeatEnabled;
             RepeatButton.Background = isRepeatEnabled ? Brushes.LightGreen : Brushes.Transparent;
         }
+
+        private void CreatePlaylist_Click(object sender, RoutedEventArgs e)
+        {
+
+            string playlistName = Interaction.InputBox("Ingrese el nombre de la nueva playlist:", "Crear Playlist", "");
+            if (!string.IsNullOrWhiteSpace(playlistName))
+            { 
+                if (string.IsNullOrWhiteSpace(playlistName))
+                {
+                    MessageBox.Show("Debes ingresar un nombre válido.");
+                    return;
+                }
+
+                // Crear la playlist en la base de datos
+                playlistController.Create(playlistName);
+
+                // Recargar todas las playlists
+                Playlists = playlistController.GetAll();
+                PlaylistListBox.ItemsSource = Playlists;
+
+                // Buscar la nueva playlist por nombre
+                var newPlaylist = Playlists.FirstOrDefault(p => p.Name == playlistName);
+                if (newPlaylist != null && SelectedSong != null)
+                {
+                    playlistController.AddSong(newPlaylist.Id.ToString(), SelectedSong.Id);
+                    newPlaylist.Songs.Add(SelectedSong); // Reflejar en memoria
+                    MessageBox.Show($"La canción '{SelectedSong.Title}' fue añadida a la playlist '{playlistName}'.");
+                }
+            }
+        }
+
+        private void AddPlayListButton_Click(object sender, RoutedEventArgs e)
+        {
+            var listas = playlistController.GetAll();
+            string playlistId;
+
+            if (listas.Count == 0)
+            {
+                playlistId = CreateNewPlaylist();
+                if (playlistId == null) return;
+            }
+            else
+            {
+                playlistId = SelectOrCreatePlaylist(listas);
+                if (playlistId == null) return;
+            }
+            if (SelectedSong == null)
+            {
+                MessageBox.Show("Selecciona primero una canción.", "Atención",
+                                MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            playlistController.AddSong(playlistId, SelectedSong.Id);
+
+            RefreshPlaylistsInUI();
+
+            MessageBox.Show($"\"{SelectedSong.Title}\" añadida a la playlist.",
+                            "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        private string CreateNewPlaylist()
+        {
+            string nombre = Interaction.InputBox(
+                "Escribe el nombre de la nueva playlist:",
+                "Crear Playlist",
+                "Mi Playlist");
+
+            if (string.IsNullOrWhiteSpace(nombre))
+                return null;
+
+            playlistController.Create(nombre);
+            var todas = playlistController.GetAll();
+            return todas.Last().Id.ToString();
+        }
+        private string SelectOrCreatePlaylist(IList<Playlist> listas)
+        {
+            var texto = string.Join("\n", listas.Select((p, i) => $"{i + 1}. {p.Name}"));
+            texto += "\n\nEscribe el número de playlist o N para nueva:";
+
+            string resp = Interaction.InputBox(texto, "Seleccionar Playlist", "1");
+            if (string.IsNullOrWhiteSpace(resp)) return null;
+
+            if (resp.Trim().ToUpper() == "N")
+                return CreateNewPlaylist();
+
+            if (int.TryParse(resp, out int idx) && idx >= 1 && idx <= listas.Count)
+                return listas[idx - 1].Id.ToString();
+
+            MessageBox.Show("Entrada no válida.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            return null;
+        }
+
+       
+        private void RefreshPlaylistsInUI()
+        {
+            Playlists.Clear();
+            foreach (var p in playlistController.GetAll())
+            {
+             
+                Playlists.Add(p);
+            }
+            PlaylistListBox.Items.Refresh();
+        }
+
+        private void LoadSongsFromPlaylist(string playlistId)
+        {
+            var songs = playlistController.GetSongs(playlistId); 
+            SongsInPlaylist.Clear();
+
+            foreach (var song in songs)
+            {
+                SongsInPlaylist.Add(song);
+            }
+        }
+
+
 
     }
 }

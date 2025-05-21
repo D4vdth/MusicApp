@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:av="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="av" x:Class="MusicApp.MainWindow"
-        Title="Music Player" Height="550" Width="800">
+        Title="Music Player" Height="721" Width="796">
     <Window.Resources>
         <Style x:Key="ControlButtonStyle" TargetType="Button">
             <Setter Property="Width" Value="45"/>
@@ -66,7 +66,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-         <!-- ESTILOS DEL BOTON -->
+        <!-- ESTILOS DEL BOTON -->
         <Style x:Key="PlayButtonStyle" TargetType="Button">
             <Setter Property="Width" Value="45"/>
             <Setter Property="Height" Value="30"/>
@@ -89,8 +89,6 @@
             </Setter>
         </Style>
     </Window.Resources>
-
-
     <Grid Margin="10">
         <!-- Columnas: Lista de pistas | Área de reproducción -->
         <Grid.ColumnDefinitions>
@@ -113,7 +111,7 @@
             Height="30"
             Width="200"
             Margin="0,0,0,10">
-                
+
                 <TextBox Name="SearchBox"
                  Width="200"
                  Height="28"
@@ -126,21 +124,40 @@
                  TextChanged="SearchBox_TextChanged"
                  Padding="5"/>
             </Border>
+
+            <GroupBox Header="Playlist" Margin="10">
+                <StackPanel>
+                    <!-- Crear nueva playlist -->
+                    <TextBlock Text="Crear nueva playlist:" Margin="0,5,0,0"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
+                        <TextBox x:Name="NewPlaylistNameTextBox" Width="150" Margin="0,0,5,0"/>
+                        <Button Content="Crear" Click="CreatePlaylist_Click"/>
+                    </StackPanel>
+
+                    <!-- Agregar canción a playlist existente -->
+                    <TextBlock Text="Agregar a playlist existente:"/>
+                    <ComboBox x:Name="PlaylistComboBox" Width="200" Margin="0,5,0,5"
+                  DisplayMemberPath="Name" SelectedValuePath="Id"/>
+
+                    <Button Content="Agregar canción a esta playlist" Click="AddPlayListButton_Click"/>
+                </StackPanel>
+            </GroupBox>
+
             <!-- Lista de canciones -->
-            <ListBox x:Name="TracksListBox"
+            <ListBox x:Name="PlaylistListBox"
              Grid.Column="0"
-             DisplayMemberPath="Title"
+             DisplayMemberPath="Name"
              SelectedIndex="0"
              Margin="0,10,10,207"
-             SelectedItem="{Binding SelectedSong}"
-             Height="200">
+             ItemsSource="{Binding Playlists}"
+             SelectedItem="{Binding SelectedPlaylist}"
+             Height="60">
 
             </ListBox>
         </StackPanel>
 
         <ListView ItemsSource="{Binding Songs}" 
-                  Height="200" 
-                  Margin="0,214,10,0" 
+                  Margin="0,306,10,118" 
                   SelectionChanged="ChangeSong" 
                   SelectedItem="{Binding SelectedSong, Mode=TwoWay}"
                   HorizontalContentAlignment="Stretch">
@@ -165,6 +182,35 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+
+        <TextBlock Text="🎵 Playlist" 
+           FontWeight="Bold" 
+           FontSize="16" 
+           Margin="10,465,0,15"/>
+
+        <ListView ItemsSource="{Binding SongsInPlaylist}" 
+          Margin="5,512,10,10" 
+          HorizontalContentAlignment="Stretch">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Border Margin="2" Padding="8" CornerRadius="10" Background="#FFF1F1F1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="1" Margin="10,0">
+                                <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="10"/>
+                                <TextBlock Text="{Binding Duration}" FontSize="12" Foreground="Gray"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
 
         <!-- Panel de reproducción -->
         <StackPanel Grid.Column="1">
@@ -198,12 +244,12 @@
                         <Rectangle Width="16" Height="16" Fill="Black" RadiusX="1" RadiusY="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
                 </Button>
-                
+
                 <Button Width="50" Click="NextButton_Click" Margin="5,0" ToolTip="Siguiente canción" BorderThickness="0" Background="Transparent" Padding="5">
                     <Grid>
                         <Polygon Points="0,0 14,10 0,20" Fill="Black"/>
                         <Rectangle Width="4" Height="20" Fill="Black" HorizontalAlignment="Left"/>
-                        
+
                     </Grid>
                 </Button>
                 <Button x:Name="ShuffleButton" Content="🔀" Width="40" Height="30" Click="ShuffleButton_Click" ToolTip="Reproducción aleatoria" Margin="5,0"/>

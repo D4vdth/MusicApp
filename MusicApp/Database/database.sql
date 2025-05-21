@@ -25,6 +25,20 @@ CREATE TABLE Song (
     FOREIGN KEY (ArtistId) REFERENCES Artist(Id)
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
+
+CREATE TABLE Playlist (
+  Id   CHAR(36) PRIMARY KEY,
+  Name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE PlaylistSong (
+  PlaylistId CHAR(36) NOT NULL,
+  SongId     INT     NOT NULL,
+  PRIMARY KEY (PlaylistId, SongId),
+  FOREIGN KEY (PlaylistId) REFERENCES Playlist(Id) ON DELETE CASCADE,
+  FOREIGN KEY (SongId)     REFERENCES Song(Id)     ON DELETE CASCADE
+);
+
    
 INSERT INTO Artist (Name) VALUES ('Luis Alfonso');
 INSERT INTO Artist (Name) VALUES ('Grupo Frontera');
@@ -37,5 +51,3 @@ INSERT INTO Album (Name, ArtistId, ReleaseDate) VALUES ('El Comienzo', (SELECT I
 INSERT INTO Album (Name, ArtistId, ReleaseDate) VALUES ('Suavemente', (SELECT Id FROM Artist WHERE Name = 'Elvis Crespo'), '1998-01-01'); 
 INSERT INTO Album (Name, ArtistId, ReleaseDate) VALUES ('Use Your Illusion I', (SELECT Id FROM Artist WHERE Name = 'Guns N''Roses'), '1991-01-01'); 
 INSERT INTO Album (Name, ArtistId, ReleaseDate) VALUES ('MANIFESTTING 20-05', (SELECT Id FROM Artist WHERE Name = 'Feid'), '2024-01-01');
-
-
