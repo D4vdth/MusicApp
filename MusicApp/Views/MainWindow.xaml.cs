@@ -179,6 +179,7 @@ namespace MusicApp
             MediaPlayer.Volume = VolumeSlider.Value;
             MediaPlayer.IsMuted = false;
             currentSong = selectedSong;
+            LoadSong(selectedSong);
 
             MediaPlayer.MediaOpened += (s, e) =>
             {
