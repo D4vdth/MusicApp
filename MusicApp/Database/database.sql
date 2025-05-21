@@ -26,6 +26,14 @@ CREATE TABLE Song (
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
    
+CREATE TABLE Comments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    songId INT NOT NULL,
+    username VARCHAR(50),
+    comment TEXT,
+    commentDate DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
 INSERT INTO Artist (Name) VALUES ('Luis Alfonso');
 INSERT INTO Artist (Name) VALUES ('Grupo Frontera');
 INSERT INTO Artist (Name) VALUES ('Elvis Crespo');

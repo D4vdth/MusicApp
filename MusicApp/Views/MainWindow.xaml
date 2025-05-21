@@ -66,7 +66,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-         <!-- ESTILOS DEL BOTON -->
+        <!-- ESTILOS DEL BOTON -->
         <Style x:Key="PlayButtonStyle" TargetType="Button">
             <Setter Property="Width" Value="45"/>
             <Setter Property="Height" Value="30"/>
@@ -113,7 +113,7 @@
             Height="30"
             Width="200"
             Margin="0,0,0,10">
-                
+
                 <TextBox Name="SearchBox"
                  Width="200"
                  Height="28"
@@ -198,12 +198,12 @@
                         <Rectangle Width="16" Height="16" Fill="Black" RadiusX="1" RadiusY="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
                 </Button>
-                
+
                 <Button Width="50" Click="NextButton_Click" Margin="5,0" ToolTip="Siguiente canción" BorderThickness="0" Background="Transparent" Padding="5">
                     <Grid>
                         <Polygon Points="0,0 14,10 0,20" Fill="Black"/>
                         <Rectangle Width="4" Height="20" Fill="Black" HorizontalAlignment="Left"/>
-                        
+
                     </Grid>
                 </Button>
                 <Button x:Name="ShuffleButton" Content="🔀" Width="40" Height="30" Click="ShuffleButton_Click" ToolTip="Reproducción aleatoria" Margin="5,0"/>

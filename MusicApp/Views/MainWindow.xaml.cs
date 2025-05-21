@@ -17,7 +17,7 @@ namespace MusicApp
     {
         public ObservableCollection<Song> Songs { get; set; }
         private SongController songController;
-
+        private CommentsController commentsController;
         public Song SelectedSong { get; set; }
 
         private DispatcherTimer timer;
@@ -26,10 +26,8 @@ namespace MusicApp
         private bool isShuffleEnabled = false;
         private bool isRepeatEnabled = false;
         private Random random = new Random();
-
         public MainWindow()
         {
-            
             InitializeComponent();
 
             PositionSlider.PreviewMouseDown += (s, e) => isSliderBeingDragged = true;
@@ -50,7 +48,6 @@ namespace MusicApp
             timer.Tick += Timer_Tick;
             MediaPlayer.MediaEnded += MediaPlayer_MediaEnded;
         }
-
         private void Open(object sender, RoutedEventArgs e)
         {
             var dlg = new OpenFileDialog
@@ -77,6 +74,7 @@ namespace MusicApp
                 foreach (var song in songController.getAll())
                 {
                     Songs.Add(song);
+                    MessageBox.Show()
                 }
 
                 string fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"media/audio/{fileName}");
@@ -86,23 +84,18 @@ namespace MusicApp
                 MediaPlayer.Play();
             }
         }
-
-
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
             MediaPlayer.Play();
         }
-
         private void PauseButton_Click(object sender, RoutedEventArgs e)
         {
             MediaPlayer.Pause();
         }
-
         private void StopButton_Click(object sender, RoutedEventArgs e)
         {
             MediaPlayer.Stop();
         }
-
         private void PrevButton_Click(object sender, RoutedEventArgs e)
         {
 
@@ -117,7 +110,6 @@ namespace MusicApp
             this.ReproduceSong(SelectedSong);
 
         }
-
         private void NextButton_Click(object sender, RoutedEventArgs e)
         {
             if (isShuffleEnabled)
@@ -133,15 +125,13 @@ namespace MusicApp
                 return;
 
             int currentIndex = Songs.IndexOf(SelectedSong);
-            int nextIndex = (currentIndex + 1) % Songs.Count; 
+            int nextIndex = (currentIndex + 1) % Songs.Count;
 
-            SelectedSong = Songs[nextIndex]; 
+            SelectedSong = Songs[nextIndex];
 
             this.ReproduceSong(SelectedSong);
 
         }
-
-
         private void Timer_Tick(object sender, EventArgs e)
         {
             if (!isDragging && MediaPlayer.NaturalDuration.HasTimeSpan)
@@ -149,7 +139,6 @@ namespace MusicApp
                 PositionSlider.Value = MediaPlayer.Position.TotalSeconds;
             }
         }
-
         private void PositionSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             // Solo cambiar posición si el usuario NO está arrastrando
@@ -158,23 +147,19 @@ namespace MusicApp
                 MediaPlayer.Position = TimeSpan.FromSeconds(PositionSlider.Value);
             }
         }
-
         private void PositionSlider_DragStarted(object sender, DragStartedEventArgs e)
         {
             isDragging = true;
         }
-
         private void PositionSlider_DragCompleted(object sender, DragCompletedEventArgs e)
         {
             isDragging = false;
             MediaPlayer.Position = TimeSpan.FromSeconds(PositionSlider.Value);
         }
-
         private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             MediaPlayer.Volume = VolumeSlider.Value;
         }
-
         private void ChangeSong(object sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count > 0)
@@ -186,7 +171,6 @@ namespace MusicApp
                 }
             }
         }
-
         public void ReproduceSong(Song selectedSong)
         {
             string fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, selectedSong.FilePath);
@@ -197,7 +181,7 @@ namespace MusicApp
             MediaPlayer.MediaOpened += (s, e) =>
             {
                 // ayuda a establecer el rango máximo del slider según la duración de la cancion
-                PositionSlider.Maximum = MediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
+                //PositionSlider.Maximum = MediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
                 // ajusta para pequeños y grandes movimientos del slider
                 PositionSlider.SmallChange = 1; // paso pequeño: 1 segundo
                 // actualiza la posición del slider con un temporizador
@@ -206,7 +190,6 @@ namespace MusicApp
 
             MediaPlayer.Play();
         }
-
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             string query = SearchBox.Text.Trim();
@@ -230,7 +213,6 @@ namespace MusicApp
                 }
             }
         }
-
         private void MediaPlayer_MediaEnded(object sender, RoutedEventArgs e)
         {
             if (isRepeatEnabled)
@@ -252,18 +234,49 @@ namespace MusicApp
                 NextButton_Click(null, null);
             }
         }
-
         private void ShuffleButton_Click(object sender, RoutedEventArgs e)
         {
             isShuffleEnabled = !isShuffleEnabled;
             ShuffleButton.Background = isShuffleEnabled ? Brushes.LightGreen : Brushes.Transparent;
         }
-
         private void RepeatButton_Click(object sender, RoutedEventArgs e)
         {
             isRepeatEnabled = !isRepeatEnabled;
             RepeatButton.Background = isRepeatEnabled ? Brushes.LightGreen : Brushes.Transparent;
         }
-
+      /*  private void LoadComments(int songId)
+        {
+            var comments = commentsController.GetComments(songId);
+            CommentList.Items.Clear();
+            foreach (var c in comments)
+            {
+                CommentList.Items.Add($"{c.username}: {c.comment} ({c.timestamp:t})");
+            }
+        }
+        private void AddComment_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectedSong != null && !string.IsNullOrWhiteSpace(NewCommentBox.Text))
+            {
+                commentsController.AddComment(SelectedSong.Id, NewCommentBox.Text.Trim());
+                NewCommentBox.Clear();
+                LoadComments(SelectedSong.Id);
+            }
+        }
+        private void NewCommentBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (NewCommentBox.Text == "Escribe un comentario...")
+            {
+                NewCommentBox.Text = "";
+                NewCommentBox.Foreground = Brushes.Black;
+            }
+        }
+        private void NewCommentBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(NewCommentBox.Text))
+            {
+                NewCommentBox.Text = "Escribe un comentario...";
+                NewCommentBox.Foreground = Brushes.Gray;
+            }
+        }*/
     }
 }
