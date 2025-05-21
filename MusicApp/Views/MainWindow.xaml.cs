@@ -23,11 +23,14 @@ namespace MusicApp
         private DispatcherTimer timer;
         private bool isDragging = false;
         private bool isSliderBeingDragged = false;
+        private bool isShuffleEnabled = false;
+        private bool isRepeatEnabled = false;
+        private Random random = new Random();
+
         public MainWindow()
         {
             
             InitializeComponent();
-            LoadDemoSongs();
 
             PositionSlider.PreviewMouseDown += (s, e) => isSliderBeingDragged = true;
             PositionSlider.PreviewMouseUp += (s, e) =>
@@ -45,6 +48,7 @@ namespace MusicApp
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += Timer_Tick;
+            MediaPlayer.MediaEnded += MediaPlayer_MediaEnded;
         }
 
         private void Open(object sender, RoutedEventArgs e)
@@ -116,6 +120,15 @@ namespace MusicApp
 
         private void NextButton_Click(object sender, RoutedEventArgs e)
         {
+            if (isShuffleEnabled)
+            {
+                if (Songs.Count > 0)
+                {
+                    int randomIndex = random.Next(Songs.Count);
+                    SelectedSong = Songs[randomIndex];
+                    ReproduceSong(SelectedSong);
+                }
+            }
             if (Songs == null || Songs.Count == 0 || SelectedSong == null)
                 return;
 
@@ -160,10 +173,6 @@ namespace MusicApp
         private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             MediaPlayer.Volume = VolumeSlider.Value;
-        }
-
-        private void LoadDemoSongs()
-        {
         }
 
         private void ChangeSong(object sender, SelectionChangedEventArgs e)
@@ -221,6 +230,39 @@ namespace MusicApp
                 }
             }
         }
+        private void MediaPlayer_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            if (isRepeatEnabled)
+            {
+                MediaPlayer.Position = TimeSpan.Zero;
+                MediaPlayer.Play();
+            }
+            else if (isShuffleEnabled)
+            {
+                if (Songs.Count > 0)
+                {
+                    int randomIndex = random.Next(Songs.Count);
+                    SelectedSong = Songs[randomIndex];
+                    ReproduceSong(SelectedSong);
+                }
+            }
+            else
+            {
+                NextButton_Click(null, null);
+            }
+        }
+
+        private void ShuffleButton_Click(object sender, RoutedEventArgs e)
+        {
+            isShuffleEnabled = !isShuffleEnabled;
+            ShuffleButton.Background = isShuffleEnabled ? Brushes.LightGreen : Brushes.Transparent;
+        }
+
+        private void RepeatButton_Click(object sender, RoutedEventArgs e)
+        {
+            isRepeatEnabled = !isRepeatEnabled;
+            RepeatButton.Background = isRepeatEnabled ? Brushes.LightGreen : Brushes.Transparent;
+        }
 
         private void LoadComments(int songId)
         {
@@ -234,7 +276,6 @@ namespace MusicApp
                 CommentList.Items.Add($"{c.username}: {c.comment} ({c.Timestamp:t})");
             }
         }
-
 
         private void AddComment_Click(object sender, RoutedEventArgs e)
         {

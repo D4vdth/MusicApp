@@ -46,3 +46,8 @@ INSERT INTO Album (Name, ArtistId, ReleaseDate) VALUES ('El Comienzo', (SELECT I
 INSERT INTO Album (Name, ArtistId, ReleaseDate) VALUES ('Suavemente', (SELECT Id FROM Artist WHERE Name = 'Elvis Crespo'), '1998-01-01'); 
 INSERT INTO Album (Name, ArtistId, ReleaseDate) VALUES ('Use Your Illusion I', (SELECT Id FROM Artist WHERE Name = 'Guns N''Roses'), '1991-01-01'); 
 INSERT INTO Album (Name, ArtistId, ReleaseDate) VALUES ('MANIFESTTING 20-05', (SELECT Id FROM Artist WHERE Name = 'Feid'), '2024-01-01');
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 48d7b25e7d943e8cc7b1ca35fa524bb05ea61305
