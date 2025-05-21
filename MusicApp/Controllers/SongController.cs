@@ -25,5 +25,10 @@ namespace MusicApp.Controllers
         {
             return this.songService.Search(query);
         }
+
+        public void UpdateRating(string songId, int rating)
+        {
+            this.songService.UpdateRating(songId, rating);
+        }
     }
 }

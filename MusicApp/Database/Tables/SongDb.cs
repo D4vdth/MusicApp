@@ -13,7 +13,7 @@ namespace MusicApp.Database.Tables
             var songs = new List<Song>();
             string query = @"
                 SELECT
-                    s.Id, s.Title, s.ArtistId, s.AlbumId, s.Duration, s.FilePath, s.AlbumCoverPath, 
+                    s.Id, s.Title, s.ArtistId, s.AlbumId, s.Duration, s.FilePath, s.AlbumCoverPath, s.Rating, 
                     a.Id AS ArtistId, a.Name AS ArtistName,
                     al.Id AS AlbumId, al.Name AS AlbumTitle, al.ArtistId AS AlbumArtistId
                 FROM Song s
@@ -51,8 +51,9 @@ namespace MusicApp.Database.Tables
                             Duration = reader.GetTimeSpan("Duration"),
                             FilePath = reader.IsDBNull(reader.GetOrdinal("FilePath")) ? null : reader.GetString("FilePath"),
                             AlbumCoverPath = reader.IsDBNull(reader.GetOrdinal("AlbumCoverPath")) ? null : reader.GetString("AlbumCoverPath"), // Corregido el nombre de la columna
+                            Rating = reader.GetInt32("Rating"),
                             Artist = artist,
-                            Album = album
+                            Album = album,
                         };
 
                         songs.Add(song);
@@ -65,8 +66,8 @@ namespace MusicApp.Database.Tables
         public void add(Song song) 
         {
             string query = @"
-                INSERT INTO Song (Title, ArtistId, AlbumId, Duration, FilePath)
-                VALUES (@Title, @ArtistId, @AlbumId, @Duration, @FilePath)";
+                INSERT INTO Song (Title, ArtistId, AlbumId, Duration, FilePath, Rating)
+                VALUES (@Title, @ArtistId, @AlbumId, @Duration, @FilePath, @Rating)";
             using (var connection = new MySqlConnection(DbConfig.ConnectionString))
             {
                 connection.Open();
@@ -79,6 +80,7 @@ namespace MusicApp.Database.Tables
                         command.Parameters.AddWithValue("@AlbumId", 1);
                         command.Parameters.AddWithValue("@Duration", song.Duration);
                         command.Parameters.AddWithValue("@FilePath", song.FilePath);
+                        command.Parameters.AddWithValue("@Rating", song.Rating);
                         command.ExecuteNonQuery();
 
                         Console.WriteLine("Cancion: " + song.Title + " guardada con exito");
@@ -90,6 +92,21 @@ namespace MusicApp.Database.Tables
                 }
             }
 
+        }
+        public void UpdateRating(string songId, int rating)
+        {
+            string query = "UPDATE Song SET Rating = @Rating WHERE Id = @Id";
+
+            using (var connection = new MySqlConnection(DbConfig.ConnectionString))
+            {
+                connection.Open();
+                using (var command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Rating", rating);
+                    command.Parameters.AddWithValue("@Id", songId);
+                    command.ExecuteNonQuery();
+                }
+            }
         }
     }
 }
