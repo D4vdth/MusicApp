@@ -181,7 +181,7 @@ namespace MusicApp
             MediaPlayer.MediaOpened += (s, e) =>
             {
                 // ayuda a establecer el rango máximo del slider según la duración de la cancion
-                //PositionSlider.Maximum = MediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
+                PositionSlider.Maximum = MediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
                 // ajusta para pequeños y grandes movimientos del slider
                 PositionSlider.SmallChange = 1; // paso pequeño: 1 segundo
                 // actualiza la posición del slider con un temporizador
