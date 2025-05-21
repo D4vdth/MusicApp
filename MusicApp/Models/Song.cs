@@ -19,6 +19,7 @@ namespace MusicApp.Models
 
         public Artist Artist { get; set; }
         public Album Album { get; set; }
+        public int Rating { get; set; }
 
 
     }

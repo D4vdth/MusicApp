@@ -26,6 +26,7 @@ namespace MusicApp
         private bool isShuffleEnabled = false;
         private bool isRepeatEnabled = false;
         private Random random = new Random();
+        private Song currentSong;
 
         public MainWindow()
         {
@@ -193,6 +194,8 @@ namespace MusicApp
             MediaPlayer.Source = new Uri(fullPath, UriKind.Absolute);
             MediaPlayer.Volume = VolumeSlider.Value;
             MediaPlayer.IsMuted = false;
+            currentSong = selectedSong;
+            LoadSong(selectedSong);
 
             MediaPlayer.MediaOpened += (s, e) =>
             {
@@ -264,6 +267,40 @@ namespace MusicApp
             isRepeatEnabled = !isRepeatEnabled;
             RepeatButton.Background = isRepeatEnabled ? Brushes.LightGreen : Brushes.Transparent;
         }
+
+        public void LoadSong(Song song)
+        {
+            currentSong = song;
+            UpdateStarDisplay(song.Rating);
+        }
+
+        private void UpdateStarDisplay(int rating)
+        {
+            foreach (Button starButton in StarPanel.Children)
+            {
+                int starNumber = int.Parse(starButton.Tag.ToString());
+                starButton.Content = starNumber <= rating ? "★" : "☆";
+            }
+        }
+
+        private void Star_Click(object sender, RoutedEventArgs e)
+        {
+            Button clickedStar = sender as Button;
+            if (clickedStar == null)
+                return;
+
+            int rating = int.Parse(clickedStar.Tag.ToString());
+
+            if (currentSong == null)
+            {
+                MessageBox.Show("No hay canción cargada");
+                return;
+            }
+            currentSong.Rating = rating;
+            songController.UpdateRating(currentSong.Id, rating);
+            UpdateStarDisplay(rating);
+        }
+
 
     }
 }
