@@ -245,11 +245,7 @@ namespace MusicApp
             RepeatButton.Background = isRepeatEnabled ? Brushes.LightGreen : Brushes.Transparent;
         }
 
-        private void OpenRegisterView_Click(object sender, RoutedEventArgs e)
-        {
-            RegisterView registerView = new RegisterView();
-            registerView.Show();
-        }
+
         /*  private void LoadComments(int songId)
           {
               var comments = commentsController.GetComments(songId);
