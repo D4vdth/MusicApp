@@ -10,6 +10,7 @@ using System.Windows.Controls.Primitives;
 using System.IO;
 using System.Diagnostics;
 using System.Windows.Controls;
+using MusicApp.Views;
 
 namespace MusicApp
 {
@@ -74,7 +75,6 @@ namespace MusicApp
                 foreach (var song in songController.getAll())
                 {
                     Songs.Add(song);
-                    MessageBox.Show()
                 }
 
                 string fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"media/audio/{fileName}");
@@ -244,39 +244,45 @@ namespace MusicApp
             isRepeatEnabled = !isRepeatEnabled;
             RepeatButton.Background = isRepeatEnabled ? Brushes.LightGreen : Brushes.Transparent;
         }
-      /*  private void LoadComments(int songId)
+
+        private void OpenRegisterView_Click(object sender, RoutedEventArgs e)
         {
-            var comments = commentsController.GetComments(songId);
-            CommentList.Items.Clear();
-            foreach (var c in comments)
-            {
-                CommentList.Items.Add($"{c.username}: {c.comment} ({c.timestamp:t})");
-            }
+            RegisterView registerView = new RegisterView();
+            registerView.Show();
         }
-        private void AddComment_Click(object sender, RoutedEventArgs e)
-        {
-            if (SelectedSong != null && !string.IsNullOrWhiteSpace(NewCommentBox.Text))
-            {
-                commentsController.AddComment(SelectedSong.Id, NewCommentBox.Text.Trim());
-                NewCommentBox.Clear();
-                LoadComments(SelectedSong.Id);
-            }
-        }
-        private void NewCommentBox_GotFocus(object sender, RoutedEventArgs e)
-        {
-            if (NewCommentBox.Text == "Escribe un comentario...")
-            {
-                NewCommentBox.Text = "";
-                NewCommentBox.Foreground = Brushes.Black;
-            }
-        }
-        private void NewCommentBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(NewCommentBox.Text))
-            {
-                NewCommentBox.Text = "Escribe un comentario...";
-                NewCommentBox.Foreground = Brushes.Gray;
-            }
-        }*/
+        /*  private void LoadComments(int songId)
+          {
+              var comments = commentsController.GetComments(songId);
+              CommentList.Items.Clear();
+              foreach (var c in comments)
+              {
+                  CommentList.Items.Add($"{c.username}: {c.comment} ({c.timestamp:t})");
+              }
+          }
+          private void AddComment_Click(object sender, RoutedEventArgs e)
+          {
+              if (SelectedSong != null && !string.IsNullOrWhiteSpace(NewCommentBox.Text))
+              {
+                  commentsController.AddComment(SelectedSong.Id, NewCommentBox.Text.Trim());
+                  NewCommentBox.Clear();
+                  LoadComments(SelectedSong.Id);
+              }
+          }
+          private void NewCommentBox_GotFocus(object sender, RoutedEventArgs e)
+          {
+              if (NewCommentBox.Text == "Escribe un comentario...")
+              {
+                  NewCommentBox.Text = "";
+                  NewCommentBox.Foreground = Brushes.Black;
+              }
+          }
+          private void NewCommentBox_LostFocus(object sender, RoutedEventArgs e)
+          {
+              if (string.IsNullOrWhiteSpace(NewCommentBox.Text))
+              {
+                  NewCommentBox.Text = "Escribe un comentario...";
+                  NewCommentBox.Foreground = Brushes.Gray;
+              }
+          }*/
     }
 }

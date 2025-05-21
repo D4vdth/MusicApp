@@ -1,4 +1,4 @@
-﻿/*using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +10,7 @@ namespace MusicApp.Controllers
 {
     public class CommentsController
     {
-        //private readonly CommentsService serviceComments = new CommentsService();
+        private readonly CommentsService serviceComments = new CommentsService();
 
         public void AddComment(int songId, string text, string username = "Anonymous")
         {
@@ -30,4 +30,3 @@ namespace MusicApp.Controllers
         }
     }
 }
-*/
