@@ -168,7 +168,6 @@
 
         <!-- Panel de reproducción -->
         <StackPanel Grid.Column="1">
-            <Button Content="Registrar Usuario" Click="OpenRegisterView_Click" Width="50" />
             <!-- Elemento de medios invisible para audio -->
             <MediaElement x:Name="MediaPlayer"
                     LoadedBehavior="Manual"

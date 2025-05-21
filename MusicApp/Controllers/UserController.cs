@@ -20,5 +20,11 @@ namespace MusicApp.Controllers
         {
             return this.userService.get(username);
         }
+
+        public Boolean validateUser(string username, string password)
+        {
+            return userService.validateUser(username, password);
+
+        }
     }
 }

@@ -287,6 +287,7 @@ namespace MusicApp
             RegisterView registerView = new RegisterView();
             registerView.Show();
         }
+
         /*  private void LoadComments(int songId)
           {
               var comments = commentsController.GetComments(songId);
