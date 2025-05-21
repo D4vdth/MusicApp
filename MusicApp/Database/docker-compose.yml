@@ -10,7 +10,7 @@ services:
       - ./database.sql:/docker-entrypoint-initdb.d/database.sql
       - databaseMusicApp:/var/lib/mysql
     ports:
-      - "3307:3306"
+      - "3306:3306"
 
 volumes:
   databaseMusicApp:
