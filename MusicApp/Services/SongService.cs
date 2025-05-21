@@ -34,5 +34,10 @@ namespace MusicApp.Services
         {
             return getAll().Where(song => song.Title.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
         }
+
+        public void UpdateRating(string songId, int rating)
+        {
+            this.db.UpdateRating(songId, rating);
+        }
     }
 }

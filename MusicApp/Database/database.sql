@@ -20,6 +20,7 @@ CREATE TABLE Song (
     FilePath VARCHAR(500),
     AlbumCoverPath VARCHAR(500),
     AlbumId INT NOT NULL,
+    Rating INT DEFAULT 0,
     FOREIGN KEY (AlbumId) REFERENCES Album(Id)
         ON DELETE CASCADE,
     FOREIGN KEY (ArtistId) REFERENCES Artist(Id)
