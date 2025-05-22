@@ -75,7 +75,7 @@ namespace MusicApp.Database.Tables
             {
                 songs.Add(new Song
                 {
-                    Id = rdr.GetInt32("Id").ToString(),
+                    Id = rdr.GetInt32("Id"),
                     Title = rdr.GetString("Title"),
                     ArtistId = rdr.GetInt32("ArtistId").ToString(),
                     AlbumId = rdr.GetInt32("AlbumId").ToString(),

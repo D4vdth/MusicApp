@@ -305,7 +305,7 @@ namespace MusicApp
                 return;
             }
             currentSong.Rating = rating;
-            songController.UpdateRating(currentSong.Id, rating);
+            songController.UpdateRating(currentSong.Id.ToString(), rating);
             UpdateStarDisplay(rating);
         }
 
@@ -373,7 +373,7 @@ namespace MusicApp
                 var newPlaylist = Playlists.FirstOrDefault(p => p.Name == playlistName);
                 if (newPlaylist != null && SelectedSong != null)
                 {
-                    playlistController.AddSong(newPlaylist.Id.ToString(), SelectedSong.Id);
+                    playlistController.AddSong(newPlaylist.Id.ToString(), SelectedSong.Id.ToString());
                     newPlaylist.Songs.Add(SelectedSong); // Reflejar en memoria
                     MessageBox.Show($"La canción '{SelectedSong.Title}' fue añadida a la playlist '{playlistName}'.");
                 }
@@ -401,7 +401,7 @@ namespace MusicApp
                                 MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            playlistController.AddSong(playlistId, SelectedSong.Id);
+            playlistController.AddSong(playlistId, SelectedSong.Id.ToString());
 
             RefreshPlaylistsInUI();
 
