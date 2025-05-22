@@ -19,7 +19,7 @@ namespace MusicApp
     {
         public ObservableCollection<Song> Songs { get; set; }
         private SongController songController;
-        private CommentsController commentsController;
+        private CommentsController commentsController = new CommentsController();
         public Song SelectedSong { get; set; }
 
         private DispatcherTimer timer;
@@ -211,7 +211,7 @@ namespace MusicApp
             MediaPlayer.MediaOpened += (s, e) =>
             {
                 // ayuda a establecer el rango máximo del slider según la duración de la cancion
-                PositionSlider.Maximum = MediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
+                //PositionSlider.Maximum = MediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
                 // ajusta para pequeños y grandes movimientos del slider
                 PositionSlider.SmallChange = 1; // paso pequeño: 1 segundo
                 // actualiza la posición del slider con un temporizador
@@ -219,6 +219,7 @@ namespace MusicApp
             };
 
             MediaPlayer.Play();
+            LoadComments(selectedSong.Id);
         }
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -464,5 +465,43 @@ namespace MusicApp
 
 
 
+        private void LoadComments(int songId)
+        {
+            var comments = commentsController.GetComments(songId);
+
+            CommentList.Items.Clear();
+
+            foreach (var c in comments)
+            {
+                CommentList.Items.Add($"{c.username}: {c.comment} ({c.timestamp:t})");
+            }
+        }
+
+        private void AddComment_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectedSong != null && !string.IsNullOrWhiteSpace(NewCommentBox.Text)
+                && NewCommentBox.Text != "Escribe un comentario...")
+            {
+                    commentsController.AddComment(SelectedSong.Id, NewCommentBox.Text.Trim());
+                    NewCommentBox.Clear();
+                    LoadComments(SelectedSong.Id);
+            }
+        }
+        private void NewCommentBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (NewCommentBox.Text == "Escribe un comentario...")
+            {
+                NewCommentBox.Text = "";
+                NewCommentBox.Foreground = Brushes.Black;
+            }
+        }
+        private void NewCommentBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(NewCommentBox.Text))
+            {
+                NewCommentBox.Text = "Escribe un comentario...";
+                NewCommentBox.Foreground = Brushes.Gray;
+            }
+        }
     }
 }

@@ -9,7 +9,7 @@ namespace MusicApp.Models
 {
     public class Song
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Title { get; set; }
         public string ArtistId { get; set; }
         public string AlbumId { get; set; }
